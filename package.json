@@ -1,0 +1,41 @@
+{
+  "name": "j-star",
+  "version": "1.0.0",
+  "description": "javascript interface for j-star",
+  "keywords": [
+    "j*",
+    "j",
+    "j-star"
+  ],
+  "main": "j-star.min.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "jest --testPathPatterns=ipc",
+    "integration": "jest --testPathPatterns=integration",
+    "babel": "babel src -d dist",
+    "typed": "npx tsc",
+    "clean": "rm ./*.d.ts j-star*",
+    "build": "yarn test && yarn clean ; yarn typed && rollup --config && yarn pack"
+  },
+  "author": "Jo Shinonome",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jshinonome/j-star"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@types/node": "^24.1.0",
+    "apache-arrow": "^21.0.0",
+    "babel-jest": "^30.0.5",
+    "eslint": "^9.32.0",
+    "eslint-plugin-jest": "^29.0.1",
+    "esm": "^3.2.25",
+    "jest": "^30.0.5",
+    "rollup": "^4.46.2",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,10 @@
+.vscode
+*.d.ts
+*.tgz
+j-star.min.js
+local
+node_modules
+package-lock.json
+package-lock.json
+yarn.lock
+test.js
