@@ -12,36 +12,36 @@ npm install --save-dev j-star
 
 ## Quick Start
 
-### Connect to a q Process
+### Connect to a j Process
 
 ```javascript
-const { QConnection } = require("j-star");
-const q = new QConnection({ port: 1800 });
-q.connect((err) => {
+const { JConnection } = require("j-star");
+const j = new JConnection({ port: 1800 });
+j.connect((err) => {
   if (err) throw err;
   console.log("connected");
   // send query from here
 });
 ```
 
-### Connect to a TLS-protected q Process
+### Connect to a TLS-protected j Process
 
 ```javascript
-const { QConnection } = require("j-star");
-const q = new QConnection({ port: 1800, useTLS: true });
-q.connect((err) => {
+const { JConnection } = require("j-star");
+const j = new JConnection({ port: 1800, useTLS: true });
+j.connect((err) => {
   if (err) throw err;
   console.log("connected");
   // send query from here
 });
 ```
 
-### Connect to a q Process with Credentials
+### Connect to a j Process with Credentials
 
 ```javascript
-const { QConnection } = require("j-star");
-const q = new QConnection({ port: 1800, user: "user", password: "password" });
-q.connect((err) => {
+const { JConnection } = require("j-star");
+const j = new JConnection({ port: 1800, user: "user", password: "password" });
+j.connect((err) => {
   if (err) throw err;
   console.log("connected");
   // send query from here
@@ -51,7 +51,7 @@ q.connect((err) => {
 ### Send a Sync Query
 
 ```javascript
-q.sync("(+/) til 10", (err, res) => {
+j.sync("sum range 10", (err, res) => {
   if (err) throw err;
   console.log("result: ", res);
   // result: 45
@@ -61,38 +61,17 @@ q.sync("(+/) til 10", (err, res) => {
 ### Send a Sync Function Call
 
 ```javascript
-q.sync(["(*/)", [22, 27, 45]], (err, res) => {
+j.sync(["+", 3, 8], (err, res) => {
   if (err) throw err;
   console.log("result: ", res);
-  // result: 26730
+  // result: 11
 });
-```
-
-### Send a Sync Function Call with Multiple Parameters
-
-```javascript
-q.sync(
-  [
-    "mmu",
-    [1, 2, 3],
-    [
-      [1, 2, 3],
-      [4, 5, 6],
-      [7, 8, 9],
-    ],
-  ],
-  (err, res) => {
-    if (err) throw err;
-    console.log("result: ", res);
-    // result: 30,36,42
-  }
-);
 ```
 
 ### Send an Async Query
 
 ```javascript
-q.asyn("show 99", (err) => {
+j.asyn("show 99", (err) => {
   if (err) throw err;
 });
 ```
@@ -100,7 +79,7 @@ q.asyn("show 99", (err) => {
 ### Send an Async Function Call
 
 ```javascript
-q.asyn(["show", 99], (err) => {
+j.asyn(["show", 99], (err) => {
   if (err) throw err;
 });
 ```
@@ -108,19 +87,19 @@ q.asyn(["show", 99], (err) => {
 ### Subscribe
 
 ```javascript
-q.on("upd", (table, data) => {
+j.on("upd", (table, data) => {
   console.log(table, data);
 });
 
-q.sync(".u.sub[`trade;`7203.T]", (err, _res) => {
+j.sync("sub[`trade`quote]", (err, _res) => {
   if (err) throw err;
 });
 ```
 
-### Close q Connection
+### Close j Connection
 
 ```javascript
-q.close(() => {
+j.close(() => {
   console.log("closed");
 });
 ```
@@ -129,91 +108,47 @@ q.close(() => {
 
 ### Deserialization
 
-Deserialization of long and timestamp can be controlled by QConnection arguments `useBigInt` and `includeNanosecond`.
+Deserialization of long and timestamp can be controlled by JConnection arguments `useBigInt` and `includeNanosecond`.
 
-| k type     | argument          | javascript type | k null                           | infinity | -infinity |
-| ---------- | ----------------- | --------------- | -------------------------------- | -------- | --------- |
-| boolean    |                   | Boolean         |                                  |          |           |
-| guid       |                   | String          | 00000000000000000000000000000000 |          |           |
-| byte       |                   | Number          |                                  |          |           |
-| short      |                   | Number          | NaN                              | Infinity | -Infinity |
-| int        |                   | Number          | NaN                              | Infinity | -Infinity |
-| long       |                   | Number          | NaN                              | Infinity | -Infinity |
-| long       | useBigInt         | BigInt          | NaN                              | Infinity | -Infinity |
-| real       |                   | Number          | NaN                              | Infinity | -Infinity |
-| float      |                   | Number          | NaN                              | Infinity | -Infinity |
-| char       |                   | String          | ' '                              |          |           |
-| symbol     |                   | String          | ''                               |          |           |
-| timestamp  |                   | Date            | null                             | null     | null      |
-| timestamp  | includeNanosecond | String          | ''                               | ''       | ''        |
-| month      |                   | String          | null                             | null     | null      |
-| date       |                   | Date            | null                             | null     | null      |
-| date       | dateToMillisecond | Number          | NaN                              | Infinity | -Infinity |
-| datetime   |                   | Date            | null                             | null     | null      |
-| datetime   | dateToMillisecond | Number          | NaN                              | Infinity | -Infinity |
-| timespan   |                   | String          | null                             | null     | null      |
-| minute     |                   | String          | null                             | null     | null      |
-| second     |                   | String          | null                             | null     | null      |
-| time       |                   | String          | null                             | null     | null      |
-| dict       |                   | Object          |                                  |          |           |
-| list       |                   | Array           |                                  |          |           |
-| table      |                   | Object          |                                  |          |           |
-| lambda     |                   | String          |                                  |          |           |
-| projection |                   | Array           |                                  |          |           |
+| j type    | argument          | javascript type |
+| --------- | ----------------- | --------------- |
+| boolean   |                   | Boolean         |
+| u8        |                   | Number          |
+| i16       |                   | Number          |
+| i32       |                   | Number          |
+| i64       |                   | Number          |
+| i64       | useBigInt         | BigInt          |
+| f32       |                   | Number          |
+| f64       |                   | Number          |
+| symbol    |                   | String          |
+| timestamp |                   | Date            |
+| timestamp | includeNanosecond | String          |
+| date      |                   | Date            |
+| datetime  |                   | Date            |
+| duration  |                   | String          |
+| time      |                   | String          |
+| dict      |                   | Map             |
+| list      |                   | Array           |
+| dataframe |                   | Table           |
+| function  |                   | String          |
 
 ### Serialization
 
 #### Atom
 
-| javascript type | k type    |
-| --------------- | --------- |
-| Boolean         | boolean   |
-| Number          | float     |
-| String          | chars     |
-| Date            | timestamp |
+| javascript type | j type                           |
+| --------------- | -------------------------------- |
+| Boolean         | boolean                          |
+| BigInt          | i64                              |
+| Number          | i64 if isInteger(value) else f64 |
+| String          | string                           |
+| Date            | datetime                         |
+| null            | null                             |
 
-#### Array
+#### Collection
 
-| javascript type | Symbol.for('kType') | k type    |
-| --------------- | ------------------- | --------- |
-| Boolean Array   | b                   | boolean   |
-| String Array    | g                   | guid      |
-| Number Array    | i                   | int       |
-| Number Array    | j                   | long      |
-| Number Array    | f                   | float     |
-| String Array    | c                   | char      |
-| String Array    | s                   | symbol    |
-| Date Array      | p                   | timestamp |
-| Date Array      | d                   | date      |
-| Date Array      | z                   | datetime  |
-
-Use `Symbol.for('kType')` to specify k type for the array, e.g.
-
-```javascript
-const ints = [99, 11, 3, 3];
-ints[Symbol.for("kType")] = "j";
-```
-
-#### Object without meta
-
-Convert to a dictionary, keys are symbols, e.g.
-
-```javascript
-const dict = { sym: "8306.T", price: 668.2 };
-```
-
-#### Object with meta
-
-Convert to a table, e.g.
-
-```javascript
-const table = {
-  sym: ["AXJO", "AXJO"],
-  date: [new Date("2021-05-13"), new Date("2021-05-14")],
-  open: [7000, 6000],
-};
-table[Symbol.for("meta")] = {
-  c: ["sym", "date", "open"],
-  t: ["s", "d", "f"],
-};
-```
+| javascript type     | j type    |
+| ------------------- | --------- |
+| Array               | list      |
+| Table(apache-arrow) | dataframe |
+| Map or Object       | dict      |
