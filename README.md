@@ -4,12 +4,6 @@
 
 A javascript Node.js package to interface with j-star.
 
-## Installation
-
-```
-npm install --save-dev j-star
-```
-
 ## Quick Start
 
 ### Connect to a j Process

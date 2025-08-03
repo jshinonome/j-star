@@ -3,7 +3,7 @@ babel.config.json
 integration
 local
 package-lock.json
-rollup.config.js
+rollup.config.mjs
 src
 test
 *tgz
