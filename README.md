@@ -110,27 +110,25 @@ j.close(() => {
 
 Deserialization of long and timestamp can be controlled by JConnection arguments `useBigInt` and `includeNanosecond`.
 
-| j type    | argument          | javascript type |
-| --------- | ----------------- | --------------- |
-| boolean   |                   | Boolean         |
-| u8        |                   | Number          |
-| i16       |                   | Number          |
-| i32       |                   | Number          |
-| i64       |                   | Number          |
-| i64       | useBigInt         | BigInt          |
-| f32       |                   | Number          |
-| f64       |                   | Number          |
-| symbol    |                   | String          |
-| timestamp |                   | Date            |
-| timestamp | includeNanosecond | String          |
-| date      |                   | Date            |
-| datetime  |                   | Date            |
-| duration  |                   | String          |
-| time      |                   | String          |
-| dict      |                   | Map             |
-| list      |                   | Array           |
-| dataframe |                   | Table           |
-| function  |                   | String          |
+| j type    | javascript type                                    |
+| --------- | -------------------------------------------------- |
+| boolean   | Boolean                                            |
+| u8        | Number                                             |
+| i16       | Number                                             |
+| i32       | Number                                             |
+| i64       | if useBigInt is true then BigInt else Number       |
+| f32       | Number                                             |
+| f64       | Number                                             |
+| symbol    | String                                             |
+| timestamp | if includeNanosecond is true then Date else String |
+| date      | Date                                               |
+| datetime  | Date                                               |
+| duration  | String                                             |
+| time      | String                                             |
+| dict      | Map                                                |
+| list      | Array                                              |
+| dataframe | Table                                              |
+| function  | String                                             |
 
 ### Serialization
 
